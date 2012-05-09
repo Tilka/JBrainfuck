@@ -1,0 +1,5 @@
+# compile the compiler:
+make
+
+# compile the file helloworld.bf, compile the resulting java code and run it:
+make run INPUT=helloworld

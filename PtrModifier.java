@@ -1,7 +1,11 @@
 import java.io.PrintStream;
 
 public class PtrModifier extends Expression {
-    public int value;
+    private int value;
+
+    public PtrModifier(int value) {
+	this.value = value;
+    }
 
     public void compile(PrintStream out) {
 	indent(out);

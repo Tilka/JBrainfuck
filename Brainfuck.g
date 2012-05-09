@@ -19,22 +19,22 @@ expression returns [ExpressionList result]:
 	)*;
 
 modify_pointer returns [Expression result]:
-	{ PtrModifier temp = new PtrModifier(); }
+	{ int value = 0; }
 	(
-	  '>' { temp.value = +1; }
+	  '>' { value += 1; }
 	  |
-	  '<' { temp.value = -1; }
+	  '<' { value -= 1; }
 	)
-	{ $result = temp; };
+	{ $result = new PtrModifier(value); };
 
 modify_data returns [Expression result]:
-	{ DataModifier temp = new DataModifier(); }
+	{ int value = 0; }
 	(
-	  '+' { temp.value = +1; }
+	  '+' { value += 1; }
 	  |
-	  '-' { temp.value = -1; }
+	  '-' { value -= 1; }
 	)
-	{ $result = temp; };
+	{ $result = new DataModifier(value); };
 
 io returns [Expression result]:
 	'.' { $result = new Output(); }
