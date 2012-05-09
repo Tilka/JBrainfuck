@@ -9,7 +9,7 @@ class Loop extends Expression {
 
 	public void compile(PrintStream out) {
 		indent(out);
-		out.println("while (data[ptr] != 0) {");
+		out.println("while (data[ptr.get()].get() != 0) {");
 		innerCode.compile(out, getIndentationLevel() + 1);
 		indent(out);
 		out.println("}");
