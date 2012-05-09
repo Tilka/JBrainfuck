@@ -1,74 +1,46 @@
 grammar Brainfuck;
 
-@header
-{
-	import java.util.Map;
-	import java.util.TreeMap;
-}
+start: expression;
 
-@members
-{
-	Map<String,Integer> identifiers = new TreeMap<String,Integer>();
-}
+expression returns [Expression result]:
+	modify_pointer
+	|
+	modify_data
+	|
+	io
+	|
+	loop
+	;
 
-start:
-	(expression NEWLINE { System.out.println($expression.result); }
-	| NEWLINE
-	)*
-	EOF;
+modify_pointer returns [Expression result]:
+	{ PtrModifier temp = new PtrModifier(); }
+	(
+	  '>' { temp.value = +1; }
+	  |
+	  '<' { temp.value = -1; }
+	)
+	{ $result = temp; }
+	;
 
-expression returns [int result]:
-	(r=assignment | r=ternaryExpr)  { $result = $r.result; };
+modify_data returns [Expression result]:
+	{ DataModifier temp = new DataModifier(); }
+	(
+	  '+' { temp.value = +1; }
+	  |
+	  '-' { temp.value = -1; }
+	)
+	{ $result = temp; }
+	;
 
-assignment returns [int result]:
-	identifier '=' expression { $result = $expression.result; identifiers.put($identifier.text, $result); };
+io returns [Expression result]:
+	'.' { $result = new Output(); }
+	|
+	',' { $result = new Input(); }
+	;
 
-ternaryExpr returns [int result]:
-	e=boolExpr			    { $result = $e.result; }
-	('?' t=expression ':' f=expression  { $result = $result != 0 ? $t.result : $f.result; }
-	)?;
-
-boolExpr returns [int result]:
-	s=sum		{ $result = $s.result; }
-	( '<'  s=sum	{ $result = $result <  $s.result ? 1 : 0; }
-	| '>'  s=sum	{ $result = $result >  $s.result ? 1 : 0; }
-	| '<=' s=sum	{ $result = $result <= $s.result ? 1 : 0; }
-	| '>=' s=sum	{ $result = $result >= $s.result ? 1 : 0; }
-	| '==' s=sum	{ $result = $result == $s.result ? 1 : 0; }
-	| '!=' s=sum	{ $result = $result != $s.result ? 1 : 0; }
-	)*;
-
-sum returns [int result]:
-	p=product	{ $result = $p.result; }
-	( '+' p=product	{ $result += $p.result; }
-	| '-' p=product	{ $result -= $p.result; }
-	)*;
-
-product returns [int result]:
-	f=factor	{ $result = $f.result; }
-	( '*' f=factor	{ $result *= $f.result; }
-	| '/' f=factor	{ $result /= $f.result; }
-	)*;
-
-factor returns [int result]:
-	'(' expression ')'  { $result = $expression.result; }
-	| number	    { $result = Integer.parseInt($number.text); }
-	| identifier	    { $result = identifiers.get($identifier.text); };
-
-identifier:
-	LETTER_ (LETTER_ | DIGIT)*;
-
-number:
-	DIGIT+;
-
-DIGIT:
-	'0'..'9';
-
-LETTER_:
-	'a'..'z'|'A'..'Z'|'_';
-
-NEWLINE:
-	'\r'? '\n';
+loop returns [Expression result]:
+	'[' expression ']' { $result = new Loop($expression.result); }
+	;
 
 WS:
-	(' ' | '\t')+ { skip(); };
+	(~('<' | '>' | '+' | '-' | '.' | ',' | '[' | ']'))+ { skip(); };
