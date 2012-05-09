@@ -9,9 +9,9 @@ class Loop extends Expression {
 
 	public void compile(PrintStream out) {
 		indent(out);
-		out.println("do {");
+		out.println("while (data[ptr] != 0) {");
 		innerCode.compile(out, getIndentationLevel() + 1);
 		indent(out);
-		out.println("} while (data[ptr] != 0);");
+		out.println("}");
 	}
 }
