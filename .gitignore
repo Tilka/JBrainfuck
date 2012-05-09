@@ -1,3 +1,4 @@
 *.class
-Brainfuck*.java
-*.tokens
+BrainfuckLexer.java
+BrainfuckParser.java
+Brainfuck.tokens
