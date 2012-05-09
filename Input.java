@@ -1,10 +1,12 @@
 
-public class DataModifier extends Expression
+import java.io.PrintStream;
+
+public class Input extends Expression
 {
 
     public int value;
 
-    public boolean compile(PrintStream out) {
+    public void compile(PrintStream out) {
 	out.println("data[ptr] = (char) System.in.read();");
     }
 

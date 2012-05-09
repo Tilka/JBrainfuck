@@ -1,5 +1,7 @@
 
+import java.io.PrintStream;
+
 public abstract class Expression {
-    public abstract boolean compile(BufferedWriter out);
+    public abstract void compile(PrintStream out);
 }
 
