@@ -5,7 +5,7 @@ public class Output extends Expression {
 
     public void compile(PrintStream out) {
 	indent(out);
-	out.println("System.out.print((char) data[ptr]);");
+	out.println("System.out.print((char) data[ptr.get()].get());");
     }
 }
 

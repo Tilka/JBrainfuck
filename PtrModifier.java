@@ -5,7 +5,8 @@ public class PtrModifier extends Expression {
 
     public void compile(PrintStream out) {
 	indent(out);
-	out.println("ptr = (short)( (ptr + " + value + ") % 256 ); if(ptr < 0) ptr+=256;");
+//	out.println("ptr = (short)( (ptr + " + value + ") % 256 ); if(ptr < 0) ptr+=256;");
+	out.println("ptr.add("+ value +");");
     }
 }
 
