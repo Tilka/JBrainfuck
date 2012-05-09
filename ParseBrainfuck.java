@@ -8,9 +8,18 @@ import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 
 public class ParseBrainfuck {
-	private static String getRawFileName(String inputFileName) {
+	private static String getOutFileName(String inputFileName) {
 		int fileNameEnd = inputFileName.lastIndexOf('.');
-		return fileNameEnd == -1 ? inputFileName : inputFileName.substring(0, fileNameEnd);
+
+		return fileNameEnd == -1 ? inputFileName + ".java" : inputFileName.substring(0, fileNameEnd) + ".java";
+	}
+
+	private static String getClassName(String inputFileName) {
+		int fileNameEnd = inputFileName.lastIndexOf('.');
+    		int fileNameBegin = inputFileName.lastIndexOf('/');
+System.out.println(inputFileName+fileNameEnd+fileNameBegin+inputFileName.substring(fileNameBegin+1, fileNameEnd));
+
+		return fileNameEnd == -1 ? inputFileName.substring(fileNameBegin+1) : inputFileName.substring(fileNameBegin+1, fileNameEnd);
 	}
 
 	private static String fileToString(String fileName) throws IOException {
@@ -40,12 +49,12 @@ public class ParseBrainfuck {
 		}
 
 		String inFileName = args[0];
-		String rawFileName = getRawFileName(inFileName);
-		String outFileName = rawFileName + ".java";
+		String outFileName = getOutFileName(inFileName);
+		String className   = getClassName(inFileName);
 		PrintStream out = new PrintStream(outFileName);
 		try {
 			String header = fileToString("BrainfuckHeader.java");
-			out.print(String.format(header, rawFileName));
+			out.print(String.format(header, className));
 			InputStream in = new FileInputStream(inFileName);
 			compile(in, out);
 			out.print(fileToString("BrainfuckFooter.java"));
