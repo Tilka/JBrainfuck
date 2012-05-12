@@ -9,7 +9,8 @@ run:
 	java $(INPUT)
 
 clean:
-	rm -f *.class
+	rm -rf *.class
 	rm -f *Lexer.java
 	rm -f *Parser.java
 	rm -f *.tokens
+	rm -f examples/*.java

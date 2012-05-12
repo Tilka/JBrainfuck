@@ -2,3 +2,4 @@
 BrainfuckLexer.java
 BrainfuckParser.java
 Brainfuck.tokens
+examples/*.java
