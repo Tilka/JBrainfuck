@@ -6,7 +6,7 @@ all:
 run:
 	java -cp /usr/share/java/antlr3-runtime.jar:. Parse$(SYNTAX) $(INPUT).bf
 	javac $(INPUT).java
-	java $(INPUT)
+	java -cp $$(dirname $(INPUT)) $$(basename $(INPUT))
 
 clean:
 	rm -rf *.class

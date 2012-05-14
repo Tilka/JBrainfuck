@@ -10,7 +10,9 @@ class Number {
 
     public Number add(int a) {
 	value = (value + a) %% limit;
-	if(value < 0) value += limit;
+	if (value < 0) {
+	    value += limit;
+	}
 	return this;
     }
 
@@ -26,7 +28,19 @@ class Number {
 public class %s {
     private static Number[] data = new Number[ Number.limit ];
     private static Number ptr = new Number();
-    
+
+    private static void add(int value) {
+	data[ptr.get()].add(value);
+    }
+
+    private static void input() throws IOException {
+	data[ptr.get()].set(System.in.read());
+    }
+
+    private static void output() {
+	System.out.print((char) data[ptr.get()].get());
+    }
+
     public static void main(String[] args) throws IOException {
 	for(int i = 0 ; i < Number.limit ; i++)
 	    data[i] = new Number();
